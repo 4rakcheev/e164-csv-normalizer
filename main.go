@@ -87,8 +87,8 @@ func main() {
 	var numbers []string
 	var linesCounter = 0
 	for {
-		line, _, err := reader.ReadLine()
 		linesCounter++
+		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
 		} else if err != nil {
@@ -100,6 +100,7 @@ func main() {
 		if *rHeader == "y" && linesCounter == 1 {
 			continue
 		}
+
 		// Normalize numbers
 		normalizedNumber := normalize_v2(string(line), *nPrefix)
 		if len(normalizedNumber) == 0 {
@@ -131,7 +132,6 @@ func main() {
 	}
 	w.Flush()
 
-	fmt.Printf("Normalized numbers [%d] (removed [%d] duplicates) saved in `%s`\n", linesCounter, dubCount, *csvOut)
-	//fmt.Printf("Normalized numbers [%d] (removed [%d] duplicates) saved in `%s`\n", linesCounter, 0, *csvOut)
+	fmt.Printf("Normalized numbers [%d] (removed [%d] duplicates) saved in `%s`\n", linesCounter+1, dubCount, *csvOut)
 }
 
