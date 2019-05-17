@@ -4,7 +4,9 @@ Application formats various phone number strings input by users to E.164 common 
 ## Usage
 
 ```bash
+$ go get github.com/4rakcheev/e164-csv-normalizer
 $ go build
+$ ./e164-csv-normalizer -i testNumbersDB.csv
 ```
 Launch parameters
 
