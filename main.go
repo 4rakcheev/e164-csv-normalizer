@@ -109,7 +109,7 @@ func main() {
 		numbers = append(numbers, normalizedNumber)
 	}
 
-	fmt.Printf("Processed [%d] rows from file `%s`\n", linesCounter, *csvIn)
+	fmt.Printf("Processed [%d] rows from file `%s`\n", linesCounter-1, *csvIn)
 
 	// remove duplicates
 	dubCount := -1

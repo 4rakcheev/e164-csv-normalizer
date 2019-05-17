@@ -20,12 +20,12 @@ param | default | description
 Normalize the test database with numbers in varied formats (like user inputs):
 ```bash
 $ ./e164-csv-normalizer -i testNumbersDB.csv -n 358
-Processed [14] rows from file `testNumbersDB.csv`
+Processed [13] rows from file `testNumbersDB.csv`
 Normalized numbers [13] (removed [1] duplicates) saved in `normalized_testNumbersDB.csv`
 ```
 
 Input example:
-```$xslt
+```csv
 +358 40 727 9689
 +358 400903691
 +358 44 0308202
@@ -42,7 +42,7 @@ Input example:
 ```
 
 Output:
-```$xslt
+```csv
 358407279689
 358400903691
 358440308202
