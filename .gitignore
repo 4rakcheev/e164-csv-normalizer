@@ -14,3 +14,4 @@ e164-csv-normalizer
 
 # csv files
 *.csv
+!testNumbersDB.csv
