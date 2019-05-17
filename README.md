@@ -1,15 +1,25 @@
 # e164-csv-normalizer
 Application formats various phone number strings input by users to E.164 common format. The application generates a CSV file with normalized phone numbers based on an input CSV file.
 
-# Usage
+## Usage
 
 ```bash
-go build
+$ go build
 ```
+Launch parameters
 
+param | default | description
+--- | --- | ---
+`-i` | - | Input `csv file`
+`-d` | y | Set to "n" for Don't `Remove duplicates` after format
+`-n` | - | Replace first 0 to this `National Prefix`
+`-h` | n | Set to "y" for Remove `first row as header` in the IN file
+`-o` | - | Path for output normalized `csv file`
+
+## Example
 Normalize the test database with numbers in varied formats (like user inputs):
 ```bash
-./e164-csv-normalizer -i testNumbersDB.csv -n 358
+$ ./e164-csv-normalizer -i testNumbersDB.csv -n 358
 Processed [14] rows from file `testNumbersDB.csv`
 Normalized numbers [13] (removed [1] duplicates) saved in `normalized_testNumbersDB.csv`
 ```
@@ -31,7 +41,7 @@ Input example:
 358407411963
 ```
 
-Output
+Output:
 ```$xslt
 358407279689
 358400903691
