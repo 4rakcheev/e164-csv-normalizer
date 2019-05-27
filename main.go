@@ -120,7 +120,7 @@ func main() {
 	rHeader := flag.String("h", "n", "Set to `y` for Remove first row as header in the IN file")
 	rDup := flag.String("d", "y", "Set to `n` for Don't Remove duplicates after format")
 	nPrefix := flag.String("n", "", "Set National Prefix for non e164 numbers. Choose scenario `sn` for this param")
-	nSc := flag.String("sn", "", "Set one of Scenarios for National prefix replacement: `z` replace first zero, `a` add to all numbers except National Prefix itself. You can set multiple scenarios like `za`")
+	nSc := flag.String("sn", "", "Set one of Scenarios for National prefix replacement (You can use multiple scenarios like `za`):\n`z` replace first zero to prefix\n`a` add to all numbers except National Prefix itself.")
 
 	flag.Parse()
 	if len(*csvOut) == 0 {
