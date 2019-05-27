@@ -115,12 +115,12 @@ func removeDuplicates(elements []string) ([]string, int) {
 
 func main() {
 	// Read params
-	csvIn := flag.String("i", "", "Path to csv file for normalizing. Needs file with one column.")
-	csvOut := flag.String("o", "", "Path for output normalized csv file.")
-	rHeader := flag.String("h", "n", "Set to `y` for Remove first row as header in the IN file.")
+	csvIn := flag.String("i", "", "Input `csv file`. Will be processed first column.")
+	csvOut := flag.String("o", "", "Path for `Output` normalized `csv file`")
+	rHeader := flag.String("h", "n", "Set to `y` for `skip` first row as a `Header` in the input file.")
 	rDup := flag.String("d", "y", "Set to `n` for Don't Remove duplicates after format.")
-	nPrefix := flag.String("n", "", "Set a National Prefix for non e164 numbers. Choose the scenario parameter `sn` for this param.")
-	nSc := flag.String("sn", "", "Set one of Scenarios for the National prefix replacement (You can use multiple scenarios like `za`):\n`z` replace first zero to the prefix\n`a` add the prefix to all numbers except the prefix itself.")
+	nPrefix := flag.String("n", "", "Set a `National Prefix` for non e164 numbers. Choose the scenario parameter `sn` for use this feature.")
+	nSc := flag.String("sn", "", "Set of `Scenarios` for the National prefix replacement (you can use multiple scenarios like `za`):\n`z` replace first zero to the prefix\n`a` add the prefix to all numbers except National Prefix itself.")
 
 	flag.Parse()
 	if len(*csvOut) == 0 {

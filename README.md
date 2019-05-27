@@ -12,12 +12,12 @@ Launch parameters
 
 param | default | description
 --- | --- | ---
-`-i` | - | Input `csv file`
+`-i` | - | Input `csv file`. Will be processed first column.
 `-d` | y | Set to `n` for `don't remove Duplicates` after format
 `-h` | n | Set to `y` for `skip` first row as a `Header` in the input file
 `-o` | - | Path for `Output` normalized `csv file`
 `-n` | - | Set a `National Prefix` for non e164 numbers. Choose the scenario parameter `sn` for use this feature
-`-sn` | - |  Set of `Scenarios` for the National prefix replacement (you can use multiple scenarios like `za`):<br>`z` replace first zero to the prefix<br>`a` add the prefix to all numbers except National Prefix itself
+`-sn` | - | Set of `Scenarios` for the National prefix replacement (you can use multiple scenarios like `za`):<br>`z` replace first zero to the prefix<br>`a` add the prefix to all numbers except National Prefix itself
 
 
 ## Example
@@ -66,3 +66,10 @@ Output:
 358407411963
 
 ```
+
+## Build for different architectures
+Example for build executable application for Windows arch:
+```bash
+$ env GOOS=windows GOARCH=amd64 go build
+```
+Choose yours current Target Operating System (GOOS) and Target Platform (GOARCH) parameters (Godoc)[https://golang.org/doc/install/source#environment]
