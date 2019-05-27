@@ -72,4 +72,4 @@ Example for build executable application for Windows arch:
 ```bash
 $ env GOOS=windows GOARCH=amd64 go build
 ```
-Choose yours current Target Operating System (GOOS) and Target Platform (GOARCH) parameters (Godoc)[https://golang.org/doc/install/source#environment]
+Choose yours current Target Operating System (GOOS) and Target Platform (GOARCH) parameters in [Godoc](https://golang.org/doc/install/source#environment).
