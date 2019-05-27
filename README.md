@@ -16,8 +16,8 @@ param | default | description
 `-d` | y | Set to `n` for Don't `Remove duplicates` after format
 `-h` | n | Set to `y` for Remove `first row as header` in the IN file
 `-o` | - | Path for output normalized `csv file`
-`-n` | - |  Set National Prefix for non e164 numbers. Choose scenario `sn` for use this feature
-`-sn` | - |  Set one of Scenarios for National prefix replacement (you can use multiple scenarios like `za`:<br>`z` replace first zero to prefix<br>`a` add to all numbers except National Prefix itself
+`-n` | - |  Set a National Prefix for non e164 numbers. Choose the scenario parameter `sn` for use this feature
+`-sn` | - |  Set one of Scenarios for the National prefix replacement (you can use multiple scenarios like `za`:<br>`z` replace first zero to the prefix<br>`a` add the prefix to all numbers except National Prefix itself
 
 
 ## Example
