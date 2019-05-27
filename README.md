@@ -13,11 +13,11 @@ Launch parameters
 param | default | description
 --- | --- | ---
 `-i` | - | Input `csv file`
-`-d` | y | Set to `n` for Don't `Remove duplicates` after format
-`-h` | n | Set to `y` for Remove `first row as header` in the IN file
-`-o` | - | Path for output normalized `csv file`
-`-n` | - |  Set a National Prefix for non e164 numbers. Choose the scenario parameter `sn` for use this feature
-`-sn` | - |  Set one of Scenarios for the National prefix replacement (you can use multiple scenarios like `za`):<br>`z` replace first zero to the prefix<br>`a` add the prefix to all numbers except National Prefix itself
+`-d` | y | Set to `n` for `don't remove Duplicates` after format
+`-h` | n | Set to `y` for `skip` first row as a `Header` in the input file
+`-o` | - | Path for `Output` normalized `csv file`
+`-n` | - | Set a `National Prefix` for non e164 numbers. Choose the scenario parameter `sn` for use this feature
+`-sn` | - |  Set of `Scenarios` for the National prefix replacement (you can use multiple scenarios like `za`):<br>`z` replace first zero to the prefix<br>`a` add the prefix to all numbers except National Prefix itself
 
 
 ## Example
