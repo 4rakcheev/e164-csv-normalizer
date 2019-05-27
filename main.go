@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/pkg/errors"
 	"io"
 	"log"
 	"os"
@@ -11,7 +12,12 @@ import (
 	"strings"
 )
 
-func normalize_v2(n string, nationalPrefix string) string {
+const (
+	sZero = "z"
+	sAll = "a"
+)
+
+func digitsOnly(n string) string {
 	tobeString := n
 
 	// Get digits only
@@ -22,18 +28,59 @@ func normalize_v2(n string, nationalPrefix string) string {
 		return ""
 	}
 
-	// Replace first zero to national prefix
-	// todo: replace not only first Zero. Could be some zeros for string starts
-	if tobeString[:1] == "0" {
-		tobeString = TrimLeftChar(tobeString)
-		if len(tobeString) == 0 {
+	return tobeString
+}
+
+func replaceZeroPrefix(n, p string) string {
+
+	if n[:1] == "0" {
+		n = TrimLeftChar(n)
+		if len(n) == 0 {
 			return ""
 		}
 		// If country code not persist add it
-		tobeString = nationalPrefix + tobeString
+		n = p + n
+	}
+	
+	return n
+}
+
+func appendPrefix(n, p string) string {
+	if n[:len(p)] != p {
+		n = p + n
+	}
+	return n
+}
+
+func NormalizeV3(n, p, ss string) string {
+	tobeString := n
+
+	// digits only
+	tobeString = digitsOnly(n)
+
+	// National Prefix scenario play
+	for _, s := range ss {
+		switch string(s) {
+		case sZero:
+			// Replace first zero to national prefix
+			tobeString = replaceZeroPrefix(tobeString, p)
+		case sAll:
+			// Replace first zero to national prefix
+			tobeString = appendPrefix(tobeString, p)
+		}
 	}
 
 	return tobeString
+}
+
+func Validate(n string) error {
+	if strings.Index(n, "e") > -1 {
+		return errors.Errorf("number %s in large exponent format", n)
+	}
+	if strings.Index(n, "E") > -1 {
+		return errors.Errorf("number %s in large exponent format", n)
+	}
+	return nil
 }
 
 func TrimLeftChar(s string) string {
@@ -70,9 +117,11 @@ func main() {
 	// Read params
 	csvIn := flag.String("i", "", "Path to csv file for normalizing. Needs file with one column")
 	csvOut := flag.String("o", "", "Path for output normalized csv file")
-	rHeader := flag.String("h", "n", "Set to \"y\" for Remove first row as header in the IN file")
-	rDup := flag.String("d", "y", "Set to \"n\" for Don't Remove duplicates after format")
-	nPrefix := flag.String("n", "", "Replace first 0 to this National Prefix")
+	rHeader := flag.String("h", "n", "Set to `y` for Remove first row as header in the IN file")
+	rDup := flag.String("d", "y", "Set to `n` for Don't Remove duplicates after format")
+	nPrefix := flag.String("n", "", "Set National Prefix for non e164 numbers. Choose scenario `sn` for this param")
+	nSc := flag.String("sn", "", "Set one of Scenarios for National prefix replacement: `z` replace first zero, `a` add to all numbers except National Prefix itself. You can set multiple scenarios like `za`")
+
 	flag.Parse()
 	if len(*csvOut) == 0 {
 		*csvOut = "normalized_" + *csvIn
@@ -81,11 +130,16 @@ func main() {
 		log.Fatal("file for parse not set. Use -in option")
 	}
 
+	if len(*nPrefix) > 0 && len(*nSc) == 0 {
+		log.Fatal("Scenario \"sn\" parameter required for mutate numbers with National Prefix")
+	}
+
 	// Read CSV and normalize number
 	csvFile, _ := os.Open(*csvIn)
 	reader := bufio.NewReader(csvFile)
 	var numbers []string
 	var linesCounter = 0
+	var wrongNumbers []string
 	for {
 		linesCounter++
 		line, _, err := reader.ReadLine()
@@ -101,8 +155,15 @@ func main() {
 			continue
 		}
 
+		number := string(line)
+		// Validate number string
+		if err := Validate(number); err != nil {
+			wrongNumbers = append(wrongNumbers, fmt.Sprintf("(!)skipped line %d with error: \"%s\"", linesCounter, err.Error()))
+			continue
+		}
+
 		// Normalize numbers
-		normalizedNumber := normalize_v2(string(line), *nPrefix)
+		normalizedNumber := NormalizeV3(string(line), *nPrefix, *nSc)
 		if len(normalizedNumber) == 0 {
 			continue
 		}
@@ -112,7 +173,7 @@ func main() {
 	fmt.Printf("Processed [%d] rows from file `%s`\n", linesCounter-1, *csvIn)
 
 	// remove duplicates
-	dubCount := -1
+	dubCount := 0
 	if *rDup == "y" {
 		numbers, dubCount = removeDuplicates(numbers)
 	}
@@ -132,6 +193,11 @@ func main() {
 	}
 	w.Flush()
 
-	fmt.Printf("Normalized numbers [%d] (removed [%d] duplicates) saved in `%s`\n", linesCounter+1, dubCount, *csvOut)
+	fmt.Printf("Normalized numbers [%d] (removed [%d] duplicates) with wrong number [%d] saved in `%s`\n", linesCounter, dubCount, len(wrongNumbers), *csvOut)
+	if len(wrongNumbers) > 0 {
+		for _, wn := range wrongNumbers {
+			fmt.Printf("%s\n", wn)
+		}
+	}
 }
 
